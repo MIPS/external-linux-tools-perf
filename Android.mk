@@ -21,7 +21,7 @@ supported_platforms := linux-x86 darwin-x86
 endif
 
 cur_platform := $(filter $(HOST_OS)-$(HOST_ARCH),$(supported_platforms))
-
+ifneq ($(TARGET_ARCH),mips)
 ifdef cur_platform
 
 #
@@ -273,3 +273,4 @@ LOCAL_CFLAGS += -Wno-attributes -Werror
 include $(BUILD_EXECUTABLE)
 
 endif #cur_platform
+endif # !MIPS
