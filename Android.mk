@@ -90,12 +90,22 @@ libperf_src_files := \
 LOCAL_SRC_FILES := $(libperf_src_files)
 
 LOCAL_SRC_FILES += \
-	arch/arm/util/dwarf-regs.c
+	arch/$(TARGET_ARCH)/util/dwarf-regs.c
 
 LOCAL_CFLAGS := -DNO_NEWT_SUPPORT -DNO_LIBPERL -DNO_LIBPYTHON -DNO_STRLCPY -std=gnu99
 
 LOCAL_CFLAGS += -DHAVE_ANDROID_DEMANGLE
 LOCAL_CFLAGS += -DDWARF_SUPPORT
+
+ifeq ($(TARGET_ARCH),arm)
+LOCAL_CFLAGS += -DTARGET_OBJDUMP='"arm-linux-androideabi-objdump"'
+endif
+ifeq ($(TARGET_ARCH),mips)
+LOCAL_CFLAGS += -DTARGET_OBJDUMP='"mipsel-linux-android-objdump"'
+endif
+ifeq ($(TARGET_ARCH),x86)
+LOCAL_CFLAGS += -DTARGET_OBJDUMP='"i686-linux-android-objdump"'
+endif
 
 # various macros
 LOCAL_CFLAGS += -DETC_PERFCONFIG='"etc/perfconfig"' \
@@ -131,6 +141,16 @@ LOCAL_CFLAGS := -DNO_NEWT_SUPPORT -DNO_LIBPERL -DNO_LIBPYTHON -std=gnu99
 
 LOCAL_CFLAGS += -DHAVE_ANDROID_DEMANGLE
 LOCAL_CFLAGS += -DDWARF_SUPPORT
+
+ifeq ($(TARGET_ARCH),arm)
+LOCAL_CFLAGS += -DTARGET_OBJDUMP='"arm-linux-androideabi-objdump"'
+endif
+ifeq ($(TARGET_ARCH),mips)
+LOCAL_CFLAGS += -DTARGET_OBJDUMP='"mipsel-linux-android-objdump"'
+endif
+ifeq ($(TARGET_ARCH),x86)
+LOCAL_CFLAGS += -DTARGET_OBJDUMP='"i686-linux-android-objdump"'
+endif
 
 # various macros
 LOCAL_CFLAGS += -DETC_PERFCONFIG='"etc/perfconfig"' \

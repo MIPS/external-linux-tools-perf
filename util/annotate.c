@@ -339,7 +339,7 @@ fallback:
 		 symfs_filename, filename);
 #else
 	snprintf(command, sizeof(command),
-		 "arm-linux-androideabi-objdump --start-address=0x%016" PRIx64
+		TARGET_OBJDUMP  " --start-address=0x%016" PRIx64
 		 " --stop-address=0x%016" PRIx64 " -d%c -C %s|grep -v %s|expand",
 		 map__rip_2objdump(map, sym->start),
 		 map__rip_2objdump(map, sym->end),
