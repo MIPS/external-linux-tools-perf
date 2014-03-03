@@ -47,7 +47,12 @@ struct map *map__new(struct list_head *dsos__list, u64 start, u64 len,
 		anon = is_anon_memory(filename);
 
 		if (anon) {
-			snprintf(newfilename, sizeof(newfilename), "/tmp/perf-%d.map", pid);
+#ifdef __BIONIC__
+#define DSO_PREFIX "/data/tmp/perf-"
+#else
+#define DSO_PREFIX "/tmp/perf-"
+#endif
+			snprintf(newfilename, sizeof(newfilename), DSO_PREFIX "%d.map", pid);
 			filename = newfilename;
 		}
 

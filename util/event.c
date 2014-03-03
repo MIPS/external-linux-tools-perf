@@ -188,15 +188,18 @@ static int perf_event__synthesize_mmap_events(union perf_event *event,
 			/* Catch VDSO */
 			if (execname == NULL)
 				execname = strstr(bf, "[vdso]");
-
-			if (execname == NULL)
-				continue;
+			if (execname) {
+				size = strlen(execname);
+				execname[size - 1] = '\0'; /* Remove \n */
+			}
+			else {
+				execname = "//anon";
+				size = strlen(execname)+1;
+			}
 
 			pbf += 3;
 			n = hex2u64(pbf, &event->mmap.pgoff);
 
-			size = strlen(execname);
-			execname[size - 1] = '\0'; /* Remove \n */
 			memcpy(event->mmap.filename, execname, size);
                         /* ANDROID_CHANGE_BEGIN */
 #if defined(__BIONIC__) || defined(__APPLE__)

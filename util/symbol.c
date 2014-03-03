@@ -1511,7 +1511,12 @@ int dso__load(struct dso *dso, struct map *map, symbol_filter_t filter)
 
 	dso->adjust_symbols = 0;
 
-	if (strncmp(dso->name, "/tmp/perf-", 10) == 0) {
+#ifdef __BIONIC__
+#define DSO_PREFIX "/data/tmp/perf-"
+#else
+#define DSO_PREFIX "/tmp/perf-"
+#endif
+	if (strncmp(dso->name, DSO_PREFIX, strlen(DSO_PREFIX)) == 0) {
 		ret = dso__load_perf_map(dso, map, filter);
 		dso->symtab_type = ret > 0 ? SYMTAB__JAVA_JIT :
 					      SYMTAB__NOT_FOUND;
